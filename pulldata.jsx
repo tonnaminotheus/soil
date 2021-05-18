@@ -8,6 +8,7 @@ class Pulldata extends Component {
         temperature: 0,
         moisture: 0,
         humidity: 0,
+        sprinkle: 0,
     }
     
     refreshSensor() {
@@ -20,8 +21,17 @@ class Pulldata extends Component {
                 temperature: res.data.data.temperature,
                 moisture: res.data.data.Moisture,
                 humidity: res.data.data.humidity,
+                sprinkle: res.data.data.s,
             })
         })
+    }
+
+    getstatus(){
+        if (this.state.sprinkle == '1'){
+          return require('./picture/checkmark.jpg')
+        } else {
+          return require('./picture/crossmark.jpg')
+        }
     }
     intervalID;
 
@@ -37,10 +47,13 @@ class Pulldata extends Component {
         let temp = this.state.temperature;
         let mois = (1024 - this.state.moisture)/1024 *100;
         let humi = this.state.humidity;
+        let sp = this.state.sprinkle;
+        var imageName = require('./picture/sprinkle.jpg');
+        var sprinkleimg = this.getstatus();
         return (
 
                 <View  style = {st.container}> 
-                    <Text>We love YM</Text>
+                    
                     <div style={{ width: 200, height: 200, alignItems: 'center' }}><CircularProgressbar
             value={temp}
             text={`${temp}°C`}
@@ -81,6 +94,14 @@ class Pulldata extends Component {
             })}
           /></div>
                     <Text>Humidity: {this.state.humidity}</Text>
+                 
+                    <img style={{ width: 100, height: 100, alignItems: 'center' }} src={imageName} />
+                    <Text>Sprinkle Status:</Text>
+                  
+                      <img style={{ width: 100, height: 100, alignItems: 'center' }} src={sprinkleimg} />
+              
+                      
+                      
                 </View>
         
         )
